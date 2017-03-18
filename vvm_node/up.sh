@@ -68,7 +68,7 @@ echo "Bringing up VVM Node '$NAME'"
 docker-compose -f "$DIR/$CONFIG" -p "$NAME" up -d
 
 #IP=$(docker-machine ip $(docker-machine active))
-IP=localhost
+IP=192.168.33.10
 echo "Vivitics VirtualMachine Node $NAME running at $IP. Now obtaining token..."
 
 # obtain the live token generated on start up and pull into evar
