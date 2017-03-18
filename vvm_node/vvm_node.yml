@@ -9,9 +9,6 @@ services:
   base_notebook:
     build:
       context: vvm_notebook/docker-stacks/base-notebook
-      args:
-        VVM_USER: $VVM_USER
-        VVM_HOME_PATH: $VVM_VIVITICS_HOME_PATH
     image: jupyter/base-notebook
     volumes:
       - "work:/home/${VVM_USER}/work"
@@ -22,9 +19,6 @@ services:
       - base_notebook
     build:
       context: vvm_notebook/docker-stacks/minimal-notebook
-      args:
-        VVM_USER: $VVM_USER
-        VVM_HOME_PATH: $VVM_VIVITICS_HOME_PATH
     image: jupyter/minimal-notebook
     volumes:
       - "work:/home/${VVM_USER}/work"
@@ -35,9 +29,6 @@ services:
       - minimal_notebook
     build:
       context: vvm_notebook/docker-stacks/scipy-notebook
-      args:
-        VVM_USER: $VVM_USER
-        VVM_HOME_PATH: $VVM_VIVITICS_HOME_PATH
     image: jupyter/scipy-notebook
     volumes:
       - "work:/home/${VVM_USER}/work"
@@ -50,9 +41,6 @@ services:
       - scipy_notebook
     build:
       context: vvm_notebook/docker-stacks/$VVM_JUPYTERDSIMAGE
-      args:
-        VVM_USER: $VVM_USER
-        VVM_HOME_PATH: $VVM_VIVITICS_HOME_PATH
     image: vvm_notebook
     container_name: vvm_notebook
     volumes:
@@ -84,9 +72,6 @@ services:
   vvm_nginx:
     build:
       context: vvm_nginx
-      args:
-        VVM_USER: $VVM_USER
-        VVM_HOME_PATH: $VVM_VIVITICS_HOME_PATH
     image: vvm_nginx
     container_name: vvm_nginx
     volumes_from: [notebook]

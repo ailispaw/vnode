@@ -32,7 +32,7 @@ cp $DIR/vvm_notebook/custom.js $BASENB_DOCKERFILE_FOLDER
 cp $DIR/vvm_notebook/custom.css $BASENB_DOCKERFILE_FOLDER
 
 # edit base jupyter notebook settings to set base url and allow embedding in frames
-cat <(cat <<-EOF
+cat <<EOF >> $BASENB_DOCKERFILE_FOLDER/jupyter_notebook_config.py
 
 c.NotebookApp.base_url = "/nb"
 c.NotebookApp.tornado_settings = {
@@ -42,10 +42,9 @@ c.NotebookApp.tornado_settings = {
 }
 
 EOF
-) >> $BASENB_DOCKERFILE_FOLDER/jupyter_notebook_config.py
 
 # modify base-notebook to use VVM_USER as its NB_USER and copy over custom.js and custom.css
-find $DIR/vvm_notebook -name "Dockerfile" -exec sed -i '' "s/jovyan/${VVM_USER}/g" {} ';' # note the -i '' "..." is specific to OSx sed cmd
+find $DIR/vvm_notebook -name "Dockerfile" -exec sed -i'' "s/jovyan/${VVM_USER}/g" {} \; # note the -i '' "..." is specific to OSx sed cmd
 _LINENO=$(grep -n 'COPY jupyter_notebook_config.py /home/$NB_USER/.jupyter/' $BASENB_DOCKERFILE_PATH | cut -f1 -d:)
 awk -v n=$_LINENO -v s="RUN mkdir -p /home/\$NB_USER/.jupyter/custom/" 'NR == n {print s} {print}' $BASENB_DOCKERFILE_PATH > $BASENB_DOCKERFILE_PATH.new
 awk -v n=$((_LINENO+1)) -v s="COPY custom.js /home/\$NB_USER/.jupyter/custom/" 'NR == n {print s} {print}' $BASENB_DOCKERFILE_PATH.new > $BASENB_DOCKERFILE_PATH.new2
